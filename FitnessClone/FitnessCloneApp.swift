@@ -10,23 +10,18 @@ import SwiftData
 
 @main
 struct FitnessCloneApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    @AppStorage("IsFirstTime") var isFirstTime: Bool = true
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-        }
-        .modelContainer(sharedModelContainer)
+            if isFirstTime{
+                Onboarding()
+                    .preferredColorScheme(.dark)
+            }else{
+                SummaryView()
+                    .preferredColorScheme(.dark)
+            }
+        }.modelContainer(for: UserModel.self)
     }
+    
 }
