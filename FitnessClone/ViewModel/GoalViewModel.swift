@@ -5,7 +5,7 @@
 //  Created by Simone Sarnataro on 29/05/25.
 //
 
-import SwiftUI
+import Foundation
 import SwiftData
 
 class GoalViewModel: ObservableObject {

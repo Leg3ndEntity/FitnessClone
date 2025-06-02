@@ -113,7 +113,6 @@ struct UserDetailView: View {
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 }
-//                .disabled(true)
                 
                 if activePicker != .none {
                     UserDetailPickers(activePicker: activePicker, birthDate: $birthDate, gender: $gender, height: $height, weight: $weight)

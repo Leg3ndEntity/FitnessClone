@@ -11,7 +11,9 @@ import SwiftData
 @main
 struct FitnessCloneApp: App {
     @AppStorage("IsFirstTime") var isFirstTime: Bool = true
-
+    
+    @StateObject var healthVM = HealthViewModel.shared
+    
     var body: some Scene {
         WindowGroup {
             if isFirstTime{

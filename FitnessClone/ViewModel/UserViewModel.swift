@@ -5,7 +5,7 @@
 //  Created by Simone Sarnataro on 29/05/25.
 //
 
-import SwiftUI
+import Foundation
 import SwiftData
 
 class UserViewModel: ObservableObject {
@@ -28,6 +28,5 @@ class UserViewModel: ObservableObject {
     func deleteUser(user: UserModel, modelContext: ModelContext){
         modelContext.delete(user)
     }
-    
     
 }
