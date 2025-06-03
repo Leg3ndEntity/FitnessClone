@@ -32,8 +32,7 @@ struct WeeklyActivityRingsBanner: View {
                                 .font(.caption)
                                 .fontWeight(.semibold)
                         }.frame(width: 20, height: 20)
-                        ProgressRing(progress: .constant(entry.calories), goal: user.goal!, selectedColor: .magentaRing, width: 7.5)
-                            .frame(width: 35, height: 35)
+                        ProgressRing(progress: .constant(entry.calories), goal: user.goal!, lineWidth: 7.5, frameWidth: 35)
                         
                     }
                     

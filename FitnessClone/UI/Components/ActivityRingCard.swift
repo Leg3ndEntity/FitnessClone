@@ -25,8 +25,7 @@ struct ActivityRingCard: View {
             HStack(alignment: .center, spacing: 25){
                 
                 if let user = users.first {
-                    ProgressRing(progress: .constant(healthVM.calories), goal: user.goal!, selectedColor: .magentaRing, width: 25)
-                        .frame(width: 100, height: 100)
+                    ProgressRing(progress: .constant(healthVM.calories), goal: user.goal!, lineWidth: 25, frameWidth: 100)
                     
                     VStack(alignment: .leading){
                         Text("Move")

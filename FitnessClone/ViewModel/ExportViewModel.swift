@@ -16,8 +16,7 @@ class ExportViewModel: ObservableObject {
                 .frame(width: 300, height: 300)
             
             VStack(spacing: 40) {
-                ProgressRing(progress: .constant(progress), goal: goal, selectedColor: .magentaRing, width: 40)
-                    .frame(width: 150, height: 150)
+                ProgressRing(progress: .constant(progress), goal: goal, lineWidth: 40, frameWidth: 150)
                 
                 Text(formattedDate)
                     .font(.callout)

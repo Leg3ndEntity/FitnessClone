@@ -105,10 +105,8 @@ struct MonthlyActivityRings: View {
                             ProgressRing(
                                 progress: .constant(entry.calories),
                                 goal: user.goal!,
-                                selectedColor: .magentaRing,
-                                width: 7.5
+                                lineWidth: 7.5, frameWidth: 30
                             )
-                            .frame(width: 30, height: 30)
                         }
                     }
                 }

@@ -35,8 +35,7 @@ struct ActivityView: View {
                 ScrollView{
                     if let user = users.first {
                         VStack(spacing: 25){
-                            ProgressRing(progress: $healthVM.calories, goal: user.goal!, selectedColor: .magentaRing, width: 50)
-                                .frame(width: 200, height: 200)
+                            ProgressRing(progress: $healthVM.calories, goal: user.goal!, lineWidth: 50, frameWidth: 200)
                             
                             HStack{
                                 VStack(alignment: .leading){
@@ -106,13 +105,11 @@ struct ActivityView: View {
                                 }
                             }
                             
-                        }.padding(.vertical, 50)
-                        
+                        }.padding(10)
                     }
-                }
+                }.scrollIndicators(.visible)
                 
-            }.padding(.horizontal, 30)
-                .navigationTitle("Today, \(currentDate)")
+            }.navigationTitle("Today, \(currentDate)")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
