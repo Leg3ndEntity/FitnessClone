@@ -1,14 +1,16 @@
 //
-//  DIstanceCountPopUp.swift
+//  SessionsPopUp.swift
 //  FitnessClone
 //
-//  Created by Simone Sarnataro on 02/06/25.
+//  Created by Simone Sarnataro on 03/06/25.
 //
 
 import SwiftUI
 
-struct DistanceCountPopUp: View {
+struct SessionsPopUp: View {
+    
     @StateObject var healthVM = HealthViewModel.shared
+    @StateObject var calendarVM = CalendarViewModel.shared
     
     var body: some View {
         NavigationStack{
@@ -17,7 +19,7 @@ struct DistanceCountPopUp: View {
                 NavigationLink {
                 } label: {
                     HStack{
-                        Text("Step Distance")
+                        Text("Sessions")
                             .font(.headline)
                             .foregroundStyle(.white)
                         Spacer()
@@ -28,24 +30,30 @@ struct DistanceCountPopUp: View {
                 Divider()
                 
                 NavigationLink {
-                    DistancesCharts()
+                    WorkoutView()
                 } label: {
                     VStack(alignment: .leading, spacing: 10) {
+                        
+                        Image(systemName: "figure.walk.circle.fill")
+                            .font(.title)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundColor(Color.accentColor)
+                        
                         VStack(alignment: .leading){
-                            Text("Today")
-                                .font(.footnote)
+                            Text("Outdoor Walk")
                             
-                            Text(String(format: "%.2f", healthVM.distance*0.001))
+                            Text(String(format: "%.2f", healthVM.workoutDistance * 0.001))
                                 .font(.title)
                                 .fontWeight(.medium)
-                                .foregroundColor(.cyanRing)
-                            + Text("KM").font(.title2)
+                                .foregroundColor(Color.accentColor)
+                            + Text("KM")
+                                .font(.title2)
                                 .fontWeight(.medium)
-                                .foregroundColor(.cyanRing)
+                                .foregroundColor(Color.accentColor)
                         }
                         
-                        DailyDistanceChart(isPopUp: true)
-                            .frame(height: 75)
+                        Text(calendarVM.formatFullDate(Date()))
+                            .font(.footnote)
                     }
                 }.buttonStyle(.plain)
             }.padding()
@@ -56,5 +64,5 @@ struct DistanceCountPopUp: View {
 }
 
 #Preview {
-    DistanceCountPopUp()
+    SessionsPopUp()
 }

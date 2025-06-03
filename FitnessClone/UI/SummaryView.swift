@@ -26,7 +26,7 @@ struct SummaryView: View {
                     
                     HStack{
                         VStack(alignment: .leading) {
-                            Text(calendarVM.formatFullWeekdayDate(Date()))
+                            Text(calendarVM.formatFullWeekdayDateUppercased(Date()))
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                             Text("Summary")
@@ -70,7 +70,8 @@ struct SummaryView: View {
                     LazyVGrid(columns: columns, spacing: 10) {
                         
                         StepCountPopUp()
-                        DIstanceCountPopUp()
+                        DistanceCountPopUp()
+                        SessionsPopUp()
                         
                     }
                     

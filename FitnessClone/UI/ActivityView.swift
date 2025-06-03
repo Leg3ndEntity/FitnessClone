@@ -13,6 +13,8 @@ struct ActivityView: View {
     @Query var users: [UserModel]
     
     @StateObject var healthVM = HealthViewModel.shared
+    @StateObject var exportVM = ExportViewModel()
+    @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var showActivityCalendar: Bool = false
     
@@ -121,9 +123,11 @@ struct ActivityView: View {
                         }
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button{
-                        }label: {
-                            Image(systemName: "square.and.arrow.up")
+                        if let user = users.first {
+                            let url = exportVM.renderProgressRingView(progress: healthVM.calories, goal: user.goal!, formattedDate: calendarVM.formatShortDate(Date()))
+                            
+                            ShareLink("Share Progress", item: url, message: Text("Check out my progress today with the Fitness app."))
+                            
                         }
                     }
                 }

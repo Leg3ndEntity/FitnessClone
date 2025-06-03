@@ -183,4 +183,24 @@ class HealthKitManager {
 
         healthStore.execute(query)
     }
+    
+    func fetchDailyWorkouts(startDate: Date, endDate: Date = Date(), completion: @escaping ([HKWorkout]) -> Void) {
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+
+        let query = HKSampleQuery(
+            sampleType: HKObjectType.workoutType(),
+            predicate: predicate,
+            limit: HKObjectQueryNoLimit,
+            sortDescriptors: [sortDescriptor]
+        ) { _, samples, _ in
+            let workouts = samples as? [HKWorkout] ?? []
+            DispatchQueue.main.async {
+                completion(workouts)
+            }
+        }
+
+        healthStore.execute(query)
+    }
+
 }

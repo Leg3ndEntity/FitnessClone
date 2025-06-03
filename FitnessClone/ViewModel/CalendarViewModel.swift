@@ -20,11 +20,25 @@ class CalendarViewModel: ObservableObject {
         return formatter.string(from: date)
     }
     
-    func formatFullWeekdayDate(_ date: Date) -> String {
+    func formatFullDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        formatter.locale = Locale.current
+        return formatter.string(from: date)
+    }
+    
+    func formatFullWeekdayDateUppercased(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, d MMM"
         formatter.locale = Locale.current
         return formatter.string(from: date).uppercased()
+    }
+    
+    func formatFullWeekdayDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EE, d MMM"
+        formatter.locale = Locale.current
+        return formatter.string(from: date)
     }
     
     func formatHour(_ date: Date) -> String {

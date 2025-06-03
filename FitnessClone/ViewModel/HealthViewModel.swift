@@ -21,7 +21,57 @@ class HealthViewModel: ObservableObject {
     
     @Published var flightsClimbed: Int = 0
     @Published var workouts: [HKWorkout] = []
-    
+    var workoutType: String {
+        workouts.first?.workoutActivityType.name ?? "N/A"
+    }
+    var workoutDistance: Double {
+        workouts
+            .compactMap { $0.totalDistance?.doubleValue(for: .meter()) }
+            .reduce(0, +)
+    }
+    var workoutDuration: Double {
+        workouts
+            .compactMap(\.duration)
+            .reduce(0, +)
+    }
+    var workoutActiveCalories: Double {
+        workouts.compactMap { workout in
+            if #available(iOS 18.0, *) {
+                let stats = workout.statistics(for: HKQuantityType(.activeEnergyBurned))
+                return stats?.sumQuantity()?.doubleValue(for: .kilocalorie())
+            } else {
+                return workout.totalEnergyBurned?.doubleValue(for: .kilocalorie())
+            }
+        }.reduce(0, +)
+    }
+    var workoutAverageHeartRate: Double {
+        let heartRates: [Double] = workouts.compactMap { workout in
+            if #available(iOS 18.0, *) {
+                let stats = workout.statistics(for: HKQuantityType(.heartRate))
+                return stats?.averageQuantity()?.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
+            } else {
+                return nil
+            }
+        }
+        
+        guard !heartRates.isEmpty else { return 0 }
+        return heartRates.reduce(0, +) / Double(heartRates.count)
+    }
+    var workoutAveragePace: Double {
+        let totalDurationInMinutes = workouts
+            .map(\.duration)
+            .reduce(0, +) / 60
+
+        let totalDistanceInKilometers = workouts
+            .compactMap { $0.totalDistance?.doubleValue(for: .meter()) }
+            .reduce(0, +) / 1000
+
+        guard totalDistanceInKilometers > 0 else { return 0 }
+        
+        return totalDurationInMinutes / totalDistanceInKilometers
+    }
+
+
     @Published var calories: Int = 0
     @Published var hourlyCalories: [CalorieModel] = []
     @Published var weeklyCalories: [CalorieModel] = []
@@ -49,6 +99,7 @@ class HealthViewModel: ObservableObject {
         fetchAllCaloriesData()
         fetchAllStepsData()
         fetchAllDistanceData()
+        fetchDailyWorkouts()
     }
     
     private func fetchSteps() {
@@ -190,5 +241,16 @@ class HealthViewModel: ObservableObject {
         fetchMonthlyDistance()
         fetchYearlyDistance()
     }
+    
+    func fetchDailyWorkouts() {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date())
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        manager.fetchDailyWorkouts(startDate: startOfDay, endDate: endOfDay) { workouts in
+            self.workouts = workouts
+        }
+    }
+
     
 }
