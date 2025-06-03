@@ -38,10 +38,10 @@ struct DIstanceCountPopUp: View {
                             Text(String(format: "%.2f", healthVM.distance*0.001))
                                 .font(.title)
                                 .fontWeight(.medium)
-                                .foregroundColor(.cyan)
+                                .foregroundColor(.cyanRing)
                             + Text("KM").font(.title2)
                                 .fontWeight(.medium)
-                                .foregroundColor(.cyan)
+                                .foregroundColor(.cyanRing)
                         }
                         
                         DailyDistanceChart(isPopUp: true)

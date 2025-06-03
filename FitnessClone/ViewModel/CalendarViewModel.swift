@@ -22,9 +22,9 @@ class CalendarViewModel: ObservableObject {
     
     func formatFullWeekdayDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE, MMM d"
+        formatter.dateFormat = "EEEE, d MMM"
         formatter.locale = Locale.current
-        return formatter.string(from: date)
+        return formatter.string(from: date).uppercased()
     }
     
     func formatHour(_ date: Date) -> String {

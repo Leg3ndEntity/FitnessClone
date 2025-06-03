@@ -137,6 +137,7 @@ struct StepsCharts: View {
                 Spacer()
                 
             }.navigationTitle("Step Count")
+                .navigationBarTitleDisplayMode(.large)
                 .padding(.horizontal, 20)
                 .background {
                     Circle()

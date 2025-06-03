@@ -45,7 +45,7 @@ struct DistancesCharts: View {
                             
                             Text(String(format: "%.2f", healthVM.distance*0.001))
                                 .font(.title)
-                                .fontWeight(.medium)
+                                .fontWeight(.bold)
                                 .foregroundColor(.cyanRing)
                             + Text("KM").font(.title2)
                                 .fontWeight(.medium)
@@ -152,6 +152,7 @@ struct DistancesCharts: View {
                 Spacer()
                 
             }.navigationTitle("Step Distance")
+                .navigationBarTitleDisplayMode(.large)
                 .padding(.horizontal, 20)
                 .background {
                     Circle()

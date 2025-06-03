@@ -27,6 +27,24 @@ struct CountAndDistanceCharts: View {
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading, spacing: 10){
+                
+                VStack(alignment: .leading){
+                    Text("Steps")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                    
+                    switch selectedRange {
+                    case .day:
+                        Text("Today")
+                    case .week:
+                        Text("This Week")
+                    case .month:
+                        Text("This Month")
+                    case .year:
+                        Text("This Year")
+                    }
+                }
+                
                 Picker("Time Range", selection: $selectedRange) {
                     ForEach(TimeRange.allCases) { range in
                         Text(range.rawValue).tag(range)
@@ -60,33 +78,34 @@ struct CountAndDistanceCharts: View {
                                 .cornerRadius(12)
                             
                             
-                                NavigationLink {
-                                    DistancesCharts()
-                                } label: {
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        VStack(alignment: .leading){
-                                            Text("COUNT")
-                                                .font(.footnote)
-                                            
-                                            Text(String(format: "%.2f", healthVM.distance*0.001))
-                                                .font(.title)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.cyan)
-                                            + Text("KM").font(.title2)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.cyan)
-                                        }
+                            NavigationLink {
+                                DistancesCharts()
+                            } label: {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    VStack(alignment: .leading){
+                                        Text("COUNT")
+                                            .font(.footnote)
                                         
-                                        DailyDistanceChart(isPopUp: false)
-                                            .frame(height: 75)
+                                        Text(String(format: "%.2f", healthVM.distance*0.001))
+                                            .font(.title)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.cyan)
+                                        + Text("KM").font(.title2)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.cyan)
                                     }
-                                }.buttonStyle(.plain).padding()
+                                    
+                                    DailyDistanceChart(isPopUp: false)
+                                        .frame(height: 75)
+                                }
+                            }.buttonStyle(.plain).padding()
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(12)
                         }
                     case .week:
-                        
                         let totalSteps = healthVM.weeklySteps.reduce(0) { $0 + $1.steps }
+                        let averageSteps = healthVM.weeklySteps.isEmpty ? 0 : totalSteps / healthVM.weeklySteps.count
+                        
                         let totalDistance = healthVM.weeklyDistance.reduce(0) { $0 + $1.distance }
                         let averageDistance = healthVM.weeklyDistance.isEmpty ? 0 : totalDistance / Double(healthVM.weeklyDistance.count)
                         
@@ -99,7 +118,7 @@ struct CountAndDistanceCharts: View {
                                         Text("COUNT")
                                             .font(.footnote)
                                         
-                                        Text("\(totalSteps)")
+                                        Text("\(averageSteps)")
                                             .font(.title)
                                             .fontWeight(.medium)
                                             .foregroundColor(.lilacChart)
@@ -113,27 +132,27 @@ struct CountAndDistanceCharts: View {
                                 .cornerRadius(12)
                             
                             
-                                NavigationLink {
-                                    DistancesCharts()
-                                } label: {
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        VStack(alignment: .leading){
-                                            Text("COUNT")
-                                                .font(.footnote)
-                                            
-                                            Text(String(format: "%.2f", averageDistance*0.001))
-                                                .font(.title)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.cyan)
-                                            + Text("KM").font(.title2)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.cyan)
-                                        }
+                            NavigationLink {
+                                DistancesCharts()
+                            } label: {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    VStack(alignment: .leading){
+                                        Text("COUNT")
+                                            .font(.footnote)
                                         
-                                        WeeklyDistancesChart()
-                                            .frame(height: 75)
+                                        Text(String(format: "%.2f", averageDistance*0.001))
+                                            .font(.title)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.cyan)
+                                        + Text("KM").font(.title2)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.cyan)
                                     }
-                                }.buttonStyle(.plain).padding()
+                                    
+                                    WeeklyDistancesChart()
+                                        .frame(height: 75)
+                                }
+                            }.buttonStyle(.plain).padding()
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(12)
                         }
@@ -168,27 +187,27 @@ struct CountAndDistanceCharts: View {
                                 .cornerRadius(12)
                             
                             
-                                NavigationLink {
-                                    DistancesCharts()
-                                } label: {
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        VStack(alignment: .leading){
-                                            Text("COUNT")
-                                                .font(.footnote)
-                                            
-                                            Text(String(format: "%.2f", averageDistance*0.001))
-                                                .font(.title)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.cyan)
-                                            + Text("KM").font(.title2)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.cyan)
-                                        }
+                            NavigationLink {
+                                DistancesCharts()
+                            } label: {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    VStack(alignment: .leading){
+                                        Text("COUNT")
+                                            .font(.footnote)
                                         
-                                        MonthlyDistancesChart()
-                                            .frame(height: 75)
+                                        Text(String(format: "%.2f", averageDistance*0.001))
+                                            .font(.title)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.cyan)
+                                        + Text("KM").font(.title2)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.cyan)
                                     }
-                                }.buttonStyle(.plain).padding()
+                                    
+                                    MonthlyDistancesChart()
+                                        .frame(height: 75)
+                                }
+                            }.buttonStyle(.plain).padding()
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(12)
                         }
@@ -197,16 +216,16 @@ struct CountAndDistanceCharts: View {
                         let averageSteps = healthVM.yearlySteps.isEmpty ? 0 : totalSteps / 365
                         
                         let totalDistance = healthVM.yearlyDistance.reduce(0.0) { $0 + $1.distance }
-
+                        
                         let totalDays = healthVM.yearlyDistance.reduce(0) { sum, entry in
                             if let days = Calendar.current.range(of: .day, in: .month, for: entry.date)?.count {
                                 return sum + days
                             }
                             return sum
                         }
-
+                        
                         let averageDailyDistance = totalDays > 0 ? totalDistance / Double(totalDays) : 0
-
+                        
                         
                         VStack(alignment: .leading, spacing: 10){
                             NavigationLink {
@@ -231,27 +250,27 @@ struct CountAndDistanceCharts: View {
                                 .cornerRadius(12)
                             
                             
-                                NavigationLink {
-                                    DistancesCharts()
-                                } label: {
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        VStack(alignment: .leading){
-                                            Text("COUNT")
-                                                .font(.footnote)
-                                            
-                                            Text(String(format: "%.2f", averageDailyDistance*0.001))
-                                                .font(.title)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.cyan)
-                                            + Text("KM").font(.title2)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.cyan)
-                                        }
+                            NavigationLink {
+                                DistancesCharts()
+                            } label: {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    VStack(alignment: .leading){
+                                        Text("COUNT")
+                                            .font(.footnote)
                                         
-                                        YearlyDistancesChart()
-                                            .frame(height: 75)
+                                        Text(String(format: "%.2f", averageDailyDistance*0.001))
+                                            .font(.title)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.cyan)
+                                        + Text("KM").font(.title2)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.cyan)
                                     }
-                                }.buttonStyle(.plain).padding()
+                                    
+                                    YearlyDistancesChart()
+                                        .frame(height: 75)
+                                }
+                            }.buttonStyle(.plain).padding()
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(12)
                         }
@@ -260,8 +279,7 @@ struct CountAndDistanceCharts: View {
                 
                 Spacer()
                 
-            }.navigationTitle("Step Count")
-                .padding(.horizontal, 20)
+            }.padding(.horizontal, 20)
                 .background {
                     Circle()
                         .fill(
@@ -278,7 +296,7 @@ struct CountAndDistanceCharts: View {
                         .frame(width: 600, height: 600)
                         .offset(x: 0, y: -200)
                 }
-
+            
         }
     }
 }

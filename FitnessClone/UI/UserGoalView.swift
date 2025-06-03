@@ -19,10 +19,11 @@ enum Mode: String, CaseIterable, Identifiable {
 struct UserGoalView: View {
     @AppStorage("IsFirstTime") var isFirstTime: Bool = true
     
-    @Environment(\.modelContext) private var modelContext
+    @Environment(\.modelContext) var modelContext
     @Query var users: [UserModel]
     
     @StateObject var goalVM = GoalViewModel()
+    @StateObject var healthVM = HealthViewModel.shared
     
     @State var selectedMode: Mode = .light
     
