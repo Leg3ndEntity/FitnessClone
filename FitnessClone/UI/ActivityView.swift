@@ -35,7 +35,7 @@ struct ActivityView: View {
                 ScrollView{
                     if let user = users.first {
                         VStack(spacing: 25){
-                            ProgressRing(progress: $healthVM.calories, goal: user.goal!, lineWidth: 50, frameWidth: 200)
+                            ProgressRing(progress: $healthVM.calories, goal: user.goal!, isMainActivityRing: true, lineWidth: 50, frameWidth: 200)
                             
                             HStack{
                                 VStack(alignment: .leading){
@@ -105,7 +105,8 @@ struct ActivityView: View {
                                 }
                             }
                             
-                        }.padding(10)
+                        }.padding(.horizontal, 15)
+                            .padding(.top, 50)
                     }
                 }.scrollIndicators(.visible)
                 

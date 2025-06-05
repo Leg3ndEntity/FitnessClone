@@ -12,6 +12,7 @@ struct ProgressRing: View {
     @Binding var progress: Int
     
     var goal: Int
+    var isMainActivityRing: Bool = false
     let lineWidth: CGFloat
     let frameWidth: CGFloat
     
@@ -70,14 +71,19 @@ struct ProgressRing: View {
             }
             
             let currentStartColor = ringColors[fullCircles % ringColors.count]
-
-            if progress != 0 {
+            
+            if progress != 0 || isMainActivityRing {
                 Circle()
                     .foregroundStyle(currentStartColor)
                     .frame(width: lineWidth)
                     .padding(.bottom, frameWidth)
             }
-
+            if isMainActivityRing{
+                Image(systemName: "arrow.right")
+                    .font(.title)
+                    .foregroundColor(.black)
+                    .padding(.bottom, frameWidth)
+            }
         }
     }
 }
