@@ -44,7 +44,7 @@ struct ActivityRingCard: View {
                     }
                 }
                 
-            }.padding(10)
+            }.padding(.horizontal, 10)
             
         }.padding()
             .background(Color.gray.opacity(0.2))

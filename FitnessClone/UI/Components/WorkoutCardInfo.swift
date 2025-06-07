@@ -15,6 +15,8 @@ struct WorkoutCardInfo: View {
     var distance: Double
     var kiloCalories: Double
     var pace: Double
+    var totalKiloCalories: Double
+    var heartRate: Int
     
     func formatDuration(_ duration: TimeInterval) -> String {
         let formatter = DateComponentsFormatter()
@@ -66,6 +68,20 @@ struct WorkoutCardInfo: View {
                 }
                 
                 VStack(alignment: .leading) {
+                    Text("Total Kilocalories")
+                    Text(String(format: "%.0f", totalKiloCalories))
+                        .font(.title)
+                        .foregroundStyle(.magentaRing)
+                    + Text("KCAL")
+                        .font(.title2)
+                        .foregroundStyle(.magentaRing)
+                }
+            }
+            
+            Divider()
+            
+            LazyVGrid(columns: columns, alignment: .leading, spacing: 50) {
+                VStack(alignment: .leading) {
                     Text("Avg Pace")
                     Text(formatPace(pace))
                         .font(.title)
@@ -73,6 +89,18 @@ struct WorkoutCardInfo: View {
                     + Text("/KM")
                         .font(.title2)
                         .foregroundStyle(.cyan)
+                }
+                
+                if heartRate != 0 {
+                    VStack(alignment: .leading) {
+                        Text("Avg Heart Rate")
+                        Text("\(heartRate)")
+                            .font(.title)
+                            .foregroundStyle(.orange)
+                        + Text("BPM")
+                            .font(.title2)
+                            .foregroundStyle(.orange)
+                    }
                 }
             }
         }.padding()

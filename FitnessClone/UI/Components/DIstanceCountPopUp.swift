@@ -15,6 +15,7 @@ struct DistanceCountPopUp: View {
             VStack(alignment: .leading, spacing: 10){
                 
                 NavigationLink {
+                    CountAndDistanceCharts()
                 } label: {
                     HStack{
                         Text("Step Distance")

@@ -40,6 +40,7 @@ struct SummaryView: View {
                             showAccountView.toggle()
                         }label: {
                             Image(systemName: "person.circle")
+                                .font(.title)
                         }
                     }.opacity(showInlineTitle ? 0 : 1)
                     

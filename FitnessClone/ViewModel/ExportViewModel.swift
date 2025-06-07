@@ -48,20 +48,20 @@ class ExportViewModel: ObservableObject {
     }
     
     
-    func createWorkoutCard(type: String, duration: Double, distance: Double, kiloCalories: Double, pace: Double) -> some View {
+    func createWorkoutCard(type: String, duration: Double, distance: Double, avgKiloCalories: Double, pace: Double, totalKiloCalories: Double, heartRate: Int) -> some View {
         
         VStack(alignment: .leading, spacing: 10) {
             Text(type)
                 .font(.title)
-            WorkoutCardInfo(duration: duration, distance: distance, kiloCalories: kiloCalories, pace: pace)
+            WorkoutCardInfo(duration: duration, distance: distance, kiloCalories: avgKiloCalories, pace: pace, totalKiloCalories: totalKiloCalories, heartRate: heartRate)
         }
         .padding()
         .foregroundStyle(.white)
         
     }
     
-    func renderWorkoutCardView(type: String, duration: Double, distance: Double, kiloCalories: Double, pace: Double) -> URL {
-        let viewToExport = createWorkoutCard(type: type, duration: duration, distance: distance, kiloCalories: kiloCalories, pace: pace)
+    func renderWorkoutCardView(type: String, duration: Double, distance: Double, kiloCalories: Double, pace: Double, totalKiloCalories: Double, heartRate: Int) -> URL {
+        let viewToExport = createWorkoutCard(type: type, duration: duration, distance: distance, avgKiloCalories: kiloCalories, pace: pace, totalKiloCalories: totalKiloCalories, heartRate: heartRate)
         let renderer = ImageRenderer(content: viewToExport)
         renderer.scale = 2.0
         

@@ -23,7 +23,7 @@ struct CaloriesChart: View {
                 BarMark(
                     x: .value("Hour", entry.date),
                     y: .value("Calories", entry.calories)
-                ).foregroundStyle(.magentaRing)
+                ).foregroundStyle(.magentaRing.gradient)
             }
             
             RuleMark(y: .value("Max", maxCalories))
