@@ -11,7 +11,7 @@ import Charts
 
 struct DistancesCharts: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var distanceVM = DistanceViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var selectedRange: TimeRange = .day
@@ -43,7 +43,7 @@ struct DistancesCharts: View {
                             Text("TOTAL")
                                 .font(.footnote)
                             
-                            Text(String(format: "%.2f", healthVM.distance*0.001))
+                            Text(String(format: "%.2f", distanceVM.distance*0.001))
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(.cyanRing)
@@ -54,13 +54,13 @@ struct DistancesCharts: View {
                             Text("Today")
                                 .font(.footnote)
                             
-                            DailyDistanceChart(isPopUp: false)
+                            DailyDistanceChart(distanceVM: distanceVM, isPopUp: false)
                                 .frame(height: 250)
                         }
                     case .week:
                         
-                        let totalDistance = healthVM.weeklyDistance.reduce(0) { $0 + $1.distance }
-                        let averageDistance = healthVM.weeklyDistance.isEmpty ? 0 : totalDistance / Double(healthVM.weeklyDistance.count)
+                        let totalDistance = distanceVM.weeklyDistance.reduce(0) { $0 + $1.distance }
+                        let averageDistance = distanceVM.weeklyDistance.isEmpty ? 0 : totalDistance / Double(distanceVM.weeklyDistance.count)
                         
                         VStack(alignment: .leading){
                             Text("DAILY AVARAGE")
@@ -77,13 +77,13 @@ struct DistancesCharts: View {
                             Text("This Week")
                                 .font(.footnote)
                             
-                            WeeklyDistancesChart()
+                            WeeklyDistancesChart(distanceVM: distanceVM)
                                 .frame(height: 250)
                         }
                     case .month:
                         
-                        let totalDistance = healthVM.monthlyDistance.reduce(0) { $0 + $1.distance }
-                        let averageDistance = healthVM.monthlyDistance.isEmpty ? 0 : totalDistance / Double(healthVM.monthlyDistance.count)
+                        let totalDistance = distanceVM.monthlyDistance.reduce(0) { $0 + $1.distance }
+                        let averageDistance = distanceVM.monthlyDistance.isEmpty ? 0 : totalDistance / Double(distanceVM.monthlyDistance.count)
                         
                         VStack(alignment: .leading){
                             Text("DAILY AVARAGE")
@@ -100,23 +100,20 @@ struct DistancesCharts: View {
                             Text(calendarVM.formatMonthYear(Date()))
                                 .font(.footnote)
                             
-                            MonthlyDistancesChart()
+                            MonthlyDistancesChart(distanceVM: distanceVM)
                                 .frame(height: 250)
                         }
                     case .year:
                         let calendar = Calendar.current
+                        let now = Date()
+                        let daysSoFar = calendar.ordinality(of: .day, in: .year, for: now) ?? 365
 
-                        let totalDistance = healthVM.yearlyDistance.reduce(0.0) { $0 + $1.distance }
-
-                        let totalDays = healthVM.yearlyDistance.reduce(0) { sum, entry in
-                            if let days = calendar.range(of: .day, in: .month, for: entry.date)?.count {
-                                return sum + days
-                            }
-                            return sum
+                        let totalDistance = distanceVM.yearlyDistance.reduce(0.0) { acc, model in
+                            let daysInMonth = calendar.range(of: .day, in: .month, for: model.date)?.count ?? 0
+                            return acc + (model.distance * Double(daysInMonth))
                         }
 
-                        let averageDailyDistance = totalDays > 0 ? totalDistance / Double(totalDays) : 0
-
+                        let averageDailyDistance = daysSoFar > 0 ? totalDistance / Double(daysSoFar) : 0
 
                         VStack(alignment: .leading){
                             Text("DAILY AVARAGE")
@@ -133,7 +130,7 @@ struct DistancesCharts: View {
                             Text(formattedYear)
                                 .font(.footnote)
                             
-                            YearlyDistancesChart()
+                            YearlyDistancesChart(distanceVM: distanceVM)
                                 .frame(height: 250)
                         }
                     }

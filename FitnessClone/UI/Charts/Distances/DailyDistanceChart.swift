@@ -10,7 +10,7 @@ import Charts
 
 struct DailyDistanceChart: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var distanceVM = DistanceViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var selectedHour: Date? = nil
@@ -32,7 +32,7 @@ struct DailyDistanceChart: View {
             let hourStart = Calendar.current.date(bySetting: .minute, value: 0, of: selectedHour)!
             let hourEnd = Calendar.current.date(byAdding: .hour, value: 1, to: hourStart)!
             
-            let hourDistances = healthVM.hourlyDistance
+            let hourDistances = distanceVM.hourlyDistance
                 .filter { $0.date >= hourStart && $0.date < hourEnd }
                 .map { $0.distance }
                 .reduce(0, +)
@@ -62,7 +62,7 @@ struct DailyDistanceChart: View {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
-        let todaysStepsDistance = healthVM.hourlyDistance.filter {
+        let todaysStepsDistance = distanceVM.hourlyDistance.filter {
             $0.date >= today && $0.date < tomorrow
         }
         

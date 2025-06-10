@@ -9,14 +9,14 @@ import SwiftUI
 
 struct StepCountPopUp: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @StateObject var stepsVM = StepsViewModel()
     
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading, spacing: 10){
                 
                 NavigationLink {
-                    CountAndDistanceCharts()
+                    CountAndDistanceCharts(stepsVM: stepsVM)
                 } label: {
                     HStack{
                         Text("Step Count")
@@ -30,20 +30,20 @@ struct StepCountPopUp: View {
                 Divider()
                 
                 NavigationLink {
-                    StepsCharts()
+                    StepsCharts(stepsVM: stepsVM)
                 } label: {
                     VStack(alignment: .leading, spacing: 10) {
                         VStack(alignment: .leading){
                             Text("Today")
                                 .font(.footnote)
                             
-                            Text("\(healthVM.steps)")
+                            Text("\(stepsVM.steps)")
                                 .font(.title)
                                 .fontWeight(.medium)
                                 .foregroundColor(.lilacChart)
                         }
                         
-                        DailyStepsChart(isPopUp: true)
+                        DailyStepsChart(stepsVM: stepsVM, isPopUp: true)
                             .frame(height: 75)
                     }
                 }.buttonStyle(.plain)

@@ -10,7 +10,7 @@ import Charts
 
 struct WeeklyStepsChart: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var stepsVM = StepsViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var selectedDay: Date? = nil
@@ -24,7 +24,7 @@ struct WeeklyStepsChart: View {
                 return f
             }()
             
-            let daySteps = healthVM.weeklySteps
+            let daySteps = stepsVM.weeklySteps
                 .first(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDay) })?.steps ?? 0
             
             if daySteps > 0 {
@@ -48,7 +48,7 @@ struct WeeklyStepsChart: View {
     var body: some View {
         
         Chart {
-            ForEach(healthVM.weeklySteps) { entry in
+            ForEach(stepsVM.weeklySteps) { entry in
                 BarMark(
                     x: .value("Day", entry.date, unit: .day),
                     y: .value("Steps", entry.steps)
@@ -91,5 +91,5 @@ struct WeeklyStepsChart: View {
 
 
 #Preview {
-    WeeklyStepsChart()
+    WeeklyStepsChart(stepsVM: StepsViewModel())
 }

@@ -10,16 +10,16 @@ import Charts
 
 struct CaloriesChart: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var caloriesVM = CaloriesViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     var maxCalories: Int {
-        healthVM.hourlyCalories.map { $0.calories }.max() ?? 0
+        caloriesVM.hourlyCalories.map { $0.calories }.max() ?? 0
     }
 
     var body: some View {
         Chart {
-            ForEach(healthVM.hourlyCalories) { entry in
+            ForEach(caloriesVM.hourlyCalories) { entry in
                 BarMark(
                     x: .value("Hour", entry.date),
                     y: .value("Calories", entry.calories)

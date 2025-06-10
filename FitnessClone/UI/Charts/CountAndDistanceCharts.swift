@@ -10,8 +10,10 @@ import Charts
 
 struct CountAndDistanceCharts: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
     @StateObject var calendarVM = CalendarViewModel.shared
+    
+    @ObservedObject var distanceVM = DistanceViewModel()
+    @ObservedObject var stepsVM = StepsViewModel()
     
     @State var selectedRange: TimeRange = .day
     
@@ -57,20 +59,20 @@ struct CountAndDistanceCharts: View {
                     case .day:
                         VStack(alignment: .leading, spacing: 10){
                             NavigationLink {
-                                StepsCharts()
+                                StepsCharts(stepsVM: stepsVM)
                             } label: {
                                 VStack(alignment: .leading, spacing: 10) {
                                     VStack(alignment: .leading){
                                         Text("COUNT")
                                             .font(.footnote)
                                         
-                                        Text("\(healthVM.steps)")
+                                        Text("\(stepsVM.steps)")
                                             .font(.title)
                                             .fontWeight(.medium)
                                             .foregroundColor(.lilacChart)
                                     }
                                     
-                                    DailyStepsChart(isPopUp: false)
+                                    DailyStepsChart(stepsVM: stepsVM, isPopUp: false)
                                         .frame(height: 75)
                                 }
                             }.buttonStyle(.plain).padding()
@@ -79,14 +81,14 @@ struct CountAndDistanceCharts: View {
                             
                             
                             NavigationLink {
-                                DistancesCharts()
+                                DistancesCharts(distanceVM: distanceVM)
                             } label: {
                                 VStack(alignment: .leading, spacing: 10) {
                                     VStack(alignment: .leading){
                                         Text("COUNT")
                                             .font(.footnote)
                                         
-                                        Text(String(format: "%.2f", healthVM.distance*0.001))
+                                        Text(String(format: "%.2f", distanceVM.distance*0.001))
                                             .font(.title)
                                             .fontWeight(.medium)
                                             .foregroundColor(.cyan)
@@ -95,7 +97,7 @@ struct CountAndDistanceCharts: View {
                                             .foregroundColor(.cyan)
                                     }
                                     
-                                    DailyDistanceChart(isPopUp: false)
+                                    DailyDistanceChart(distanceVM: distanceVM, isPopUp: false)
                                         .frame(height: 75)
                                 }
                             }.buttonStyle(.plain).padding()
@@ -103,15 +105,15 @@ struct CountAndDistanceCharts: View {
                                 .cornerRadius(12)
                         }
                     case .week:
-                        let totalSteps = healthVM.weeklySteps.reduce(0) { $0 + $1.steps }
-                        let averageSteps = healthVM.weeklySteps.isEmpty ? 0 : totalSteps / healthVM.weeklySteps.count
+                        let totalSteps = stepsVM.weeklySteps.reduce(0) { $0 + $1.steps }
+                        let averageSteps = stepsVM.weeklySteps.isEmpty ? 0 : totalSteps / stepsVM.weeklySteps.count
                         
-                        let totalDistance = healthVM.weeklyDistance.reduce(0) { $0 + $1.distance }
-                        let averageDistance = healthVM.weeklyDistance.isEmpty ? 0 : totalDistance / Double(healthVM.weeklyDistance.count)
+                        let totalDistance = distanceVM.weeklyDistance.reduce(0) { $0 + $1.distance }
+                        let averageDistance = distanceVM.weeklyDistance.isEmpty ? 0 : totalDistance / Double(distanceVM.weeklyDistance.count)
                         
                         VStack(alignment: .leading, spacing: 10){
                             NavigationLink {
-                                StepsCharts()
+                                StepsCharts(stepsVM: stepsVM)
                             } label: {
                                 VStack(alignment: .leading, spacing: 10) {
                                     VStack(alignment: .leading){
@@ -124,7 +126,7 @@ struct CountAndDistanceCharts: View {
                                             .foregroundColor(.lilacChart)
                                     }
                                     
-                                    WeeklyStepsChart()
+                                    WeeklyStepsChart(stepsVM: stepsVM)
                                         .frame(height: 75)
                                 }
                             }.buttonStyle(.plain).padding()
@@ -133,7 +135,7 @@ struct CountAndDistanceCharts: View {
                             
                             
                             NavigationLink {
-                                DistancesCharts()
+                                DistancesCharts(distanceVM: distanceVM)
                             } label: {
                                 VStack(alignment: .leading, spacing: 10) {
                                     VStack(alignment: .leading){
@@ -149,7 +151,7 @@ struct CountAndDistanceCharts: View {
                                             .foregroundColor(.cyan)
                                     }
                                     
-                                    WeeklyDistancesChart()
+                                    WeeklyDistancesChart(distanceVM: distanceVM)
                                         .frame(height: 75)
                                 }
                             }.buttonStyle(.plain).padding()
@@ -158,15 +160,15 @@ struct CountAndDistanceCharts: View {
                         }
                     case .month:
                         
-                        let totalSteps = healthVM.monthlySteps.reduce(0) { $0 + $1.steps }
-                        let averageSteps = healthVM.monthlySteps.isEmpty ? 0 : totalSteps / healthVM.monthlySteps.count
+                        let totalSteps = stepsVM.monthlySteps.reduce(0) { $0 + $1.steps }
+                        let averageSteps = stepsVM.monthlySteps.isEmpty ? 0 : totalSteps / stepsVM.monthlySteps.count
                         
-                        let totalDistance = healthVM.monthlyDistance.reduce(0) { $0 + $1.distance }
-                        let averageDistance = healthVM.monthlyDistance.isEmpty ? 0 : totalDistance / Double(healthVM.monthlyDistance.count)
+                        let totalDistance = distanceVM.monthlyDistance.reduce(0) { $0 + $1.distance }
+                        let averageDistance = distanceVM.monthlyDistance.isEmpty ? 0 : totalDistance / Double(distanceVM.monthlyDistance.count)
                         
                         VStack(alignment: .leading, spacing: 10){
                             NavigationLink {
-                                StepsCharts()
+                                StepsCharts(stepsVM: stepsVM)
                             } label: {
                                 VStack(alignment: .leading, spacing: 10) {
                                     VStack(alignment: .leading){
@@ -179,7 +181,7 @@ struct CountAndDistanceCharts: View {
                                             .foregroundColor(.lilacChart)
                                     }
                                     
-                                    MonthlyStepsChart()
+                                    MonthlyStepsChart(stepsVM: stepsVM)
                                         .frame(height: 75)
                                 }
                             }.buttonStyle(.plain).padding()
@@ -188,7 +190,7 @@ struct CountAndDistanceCharts: View {
                             
                             
                             NavigationLink {
-                                DistancesCharts()
+                                DistancesCharts(distanceVM: distanceVM)
                             } label: {
                                 VStack(alignment: .leading, spacing: 10) {
                                     VStack(alignment: .leading){
@@ -204,7 +206,7 @@ struct CountAndDistanceCharts: View {
                                             .foregroundColor(.cyan)
                                     }
                                     
-                                    MonthlyDistancesChart()
+                                    MonthlyDistancesChart(distanceVM: distanceVM)
                                         .frame(height: 75)
                                 }
                             }.buttonStyle(.plain).padding()
@@ -212,24 +214,27 @@ struct CountAndDistanceCharts: View {
                                 .cornerRadius(12)
                         }
                     case .year:
-                        let totalSteps = healthVM.yearlySteps.reduce(0) { $0 + $1.steps }
-                        let averageSteps = healthVM.yearlySteps.isEmpty ? 0 : totalSteps / 365
                         
-                        let totalDistance = healthVM.yearlyDistance.reduce(0.0) { $0 + $1.distance }
+                        let calendar = Calendar.current
+                        let now = Date()
+                        let daysSoFar = calendar.ordinality(of: .day, in: .year, for: now) ?? 365
                         
-                        let totalDays = healthVM.yearlyDistance.reduce(0) { sum, entry in
-                            if let days = Calendar.current.range(of: .day, in: .month, for: entry.date)?.count {
-                                return sum + days
-                            }
-                            return sum
+                        let totalSteps = stepsVM.yearlySteps.reduce(0) { acc, model in
+                            let daysInMonth = calendar.range(of: .day, in: .month, for: model.date)?.count ?? 0
+                            return acc + (model.steps * daysInMonth)
+                        }
+                        let averageSteps = daysSoFar > 0 ? totalSteps / daysSoFar : 0
+                        
+                        let totalDistance = distanceVM.yearlyDistance.reduce(0.0) { acc, model in
+                            let daysInMonth = calendar.range(of: .day, in: .month, for: model.date)?.count ?? 0
+                            return acc + (model.distance * Double(daysInMonth))
                         }
                         
-                        let averageDailyDistance = totalDays > 0 ? totalDistance / Double(totalDays) : 0
-                        
+                        let averageDailyDistance = daysSoFar > 0 ? totalDistance / Double(daysSoFar) : 0
                         
                         VStack(alignment: .leading, spacing: 10){
                             NavigationLink {
-                                StepsCharts()
+                                StepsCharts(stepsVM: stepsVM)
                             } label: {
                                 VStack(alignment: .leading, spacing: 10) {
                                     VStack(alignment: .leading){
@@ -242,7 +247,7 @@ struct CountAndDistanceCharts: View {
                                             .foregroundColor(.lilacChart)
                                     }
                                     
-                                    YearlyStepsChart()
+                                    YearlyStepsChart(stepsVM: stepsVM)
                                         .frame(height: 75)
                                 }
                             }.buttonStyle(.plain).padding()
@@ -251,7 +256,7 @@ struct CountAndDistanceCharts: View {
                             
                             
                             NavigationLink {
-                                DistancesCharts()
+                                DistancesCharts(distanceVM: distanceVM)
                             } label: {
                                 VStack(alignment: .leading, spacing: 10) {
                                     VStack(alignment: .leading){
@@ -267,7 +272,7 @@ struct CountAndDistanceCharts: View {
                                             .foregroundColor(.cyan)
                                     }
                                     
-                                    YearlyDistancesChart()
+                                    YearlyDistancesChart(distanceVM: distanceVM)
                                         .frame(height: 75)
                                 }
                             }.buttonStyle(.plain).padding()

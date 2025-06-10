@@ -19,7 +19,7 @@ enum TimeRange: String, CaseIterable, Identifiable {
 
 struct StepsCharts: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var stepsVM = StepsViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var selectedRange: TimeRange = .day
@@ -51,7 +51,7 @@ struct StepsCharts: View {
                             Text("TOTAL")
                                 .font(.footnote)
                             
-                            Text("\(healthVM.steps)")
+                            Text("\(stepsVM.steps)")
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundStyle(.lilacChart)
@@ -59,13 +59,13 @@ struct StepsCharts: View {
                             Text("Today")
                                 .font(.footnote)
                             
-                            DailyStepsChart(isPopUp: false)
+                            DailyStepsChart(stepsVM: stepsVM, isPopUp: false)
                                 .frame(height: 250)
                         }
                     case .week:
                         
-                        let totalSteps = healthVM.weeklySteps.reduce(0) { $0 + $1.steps }
-                        let averageSteps = healthVM.weeklySteps.isEmpty ? 0 : totalSteps / healthVM.weeklySteps.count
+                        let totalSteps = stepsVM.weeklySteps.reduce(0) { $0 + $1.steps }
+                        let averageSteps = stepsVM.weeklySteps.isEmpty ? 0 : totalSteps / stepsVM.weeklySteps.count
                         
                         VStack(alignment: .leading){
                             Text("DAILY AVARAGE")
@@ -79,13 +79,13 @@ struct StepsCharts: View {
                             Text("This Week")
                                 .font(.footnote)
                             
-                            WeeklyStepsChart()
+                            WeeklyStepsChart(stepsVM: stepsVM)
                                 .frame(height: 250)
                         }
                     case .month:
                         
-                        let totalSteps = healthVM.monthlySteps.reduce(0) { $0 + $1.steps }
-                        let averageSteps = healthVM.monthlySteps.isEmpty ? 0 : totalSteps / healthVM.monthlySteps.count
+                        let totalSteps = stepsVM.monthlySteps.reduce(0) { $0 + $1.steps }
+                        let averageSteps = stepsVM.monthlySteps.isEmpty ? 0 : totalSteps / stepsVM.monthlySteps.count
                         
                         VStack(alignment: .leading){
                             Text("DAILY AVARAGE")
@@ -99,12 +99,19 @@ struct StepsCharts: View {
                             Text(calendarVM.formatMonthYear(Date()))
                                 .font(.footnote)
                             
-                            MonthlyStepsChart()
+                            MonthlyStepsChart(stepsVM: stepsVM)
                                 .frame(height: 250)
                         }
                     case .year:
-                        let totalSteps = healthVM.yearlySteps.reduce(0) { $0 + $1.steps }
-                        let averageSteps = healthVM.yearlySteps.isEmpty ? 0 : totalSteps / 365
+                        let calendar = Calendar.current
+                        let now = Date()
+                        let daysSoFar = calendar.ordinality(of: .day, in: .year, for: now) ?? 365
+                        
+                        let totalSteps = stepsVM.yearlySteps.reduce(0) { acc, model in
+                            let daysInMonth = calendar.range(of: .day, in: .month, for: model.date)?.count ?? 0
+                            return acc + (model.steps * daysInMonth)
+                        }
+                        let averageSteps = daysSoFar > 0 ? totalSteps / daysSoFar : 0
                         
                         VStack(alignment: .leading){
                             Text("DAILY AVARAGE")
@@ -118,7 +125,7 @@ struct StepsCharts: View {
                             Text(formattedYear)
                                 .font(.footnote)
                             
-                            YearlyStepsChart()
+                            YearlyStepsChart(stepsVM: stepsVM)
                                 .frame(height: 250)
                         }
                     }

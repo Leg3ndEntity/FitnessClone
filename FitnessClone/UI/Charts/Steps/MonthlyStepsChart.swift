@@ -10,7 +10,7 @@ import Charts
 
 struct MonthlyStepsChart: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var stepsVM = StepsViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var selectedDay: Date? = nil
@@ -24,7 +24,7 @@ struct MonthlyStepsChart: View {
                 return f
             }()
             
-            let daySteps = healthVM.monthlySteps
+            let daySteps = stepsVM.monthlySteps
                 .first(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDay) })?.steps ?? 0
             
             if daySteps > 0 {
@@ -50,7 +50,7 @@ struct MonthlyStepsChart: View {
             let calendar = Calendar.current
             let today = calendar.startOfDay(for: Date())
             let thisMonth = calendar.component(.month, from: today)
-            let thisMonthSteps = healthVM.monthlySteps.filter {
+            let thisMonthSteps = stepsVM.monthlySteps.filter {
                 calendar.component(.month, from: $0.date) == thisMonth
             }
             
@@ -97,5 +97,5 @@ struct MonthlyStepsChart: View {
 }
 
 #Preview {
-    MonthlyStepsChart()
+    MonthlyStepsChart(stepsVM: StepsViewModel())
 }

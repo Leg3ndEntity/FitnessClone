@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct DistanceCountPopUp: View {
-    @StateObject var healthVM = HealthViewModel.shared
+    
+    @StateObject var distanceVM = DistanceViewModel()
     
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading, spacing: 10){
                 
                 NavigationLink {
-                    CountAndDistanceCharts()
+                    CountAndDistanceCharts(distanceVM: distanceVM)
                 } label: {
                     HStack{
                         Text("Step Distance")
@@ -29,14 +30,14 @@ struct DistanceCountPopUp: View {
                 Divider()
                 
                 NavigationLink {
-                    DistancesCharts()
+                    DistancesCharts(distanceVM: distanceVM)
                 } label: {
                     VStack(alignment: .leading, spacing: 10) {
                         VStack(alignment: .leading){
                             Text("Today")
                                 .font(.footnote)
                             
-                            Text(String(format: "%.2f", healthVM.distance*0.001))
+                            Text(String(format: "%.2f", distanceVM.distance*0.001))
                                 .font(.title)
                                 .fontWeight(.medium)
                                 .foregroundColor(.cyanRing)
@@ -45,7 +46,7 @@ struct DistanceCountPopUp: View {
                                 .foregroundColor(.cyanRing)
                         }
                         
-                        DailyDistanceChart(isPopUp: true)
+                        DailyDistanceChart(distanceVM: distanceVM, isPopUp: true)
                             .frame(height: 75)
                     }
                 }.buttonStyle(.plain)

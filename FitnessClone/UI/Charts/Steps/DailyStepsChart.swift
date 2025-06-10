@@ -10,7 +10,7 @@ import Charts
 
 struct DailyStepsChart: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var stepsVM = StepsViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var selectedHour: Date? = nil
@@ -32,7 +32,7 @@ struct DailyStepsChart: View {
             let hourStart = Calendar.current.date(bySetting: .minute, value: 0, of: selectedHour)!
             let hourEnd = Calendar.current.date(byAdding: .hour, value: 1, to: hourStart)!
             
-            let hourSteps = healthVM.hourlySteps
+            let hourSteps = stepsVM.hourlySteps
                 .filter { $0.date >= hourStart && $0.date < hourEnd }
                 .map { $0.steps }
                 .reduce(0, +)
@@ -59,10 +59,9 @@ struct DailyStepsChart: View {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
-        let todaysSteps = healthVM.hourlySteps.filter {
+        let todaysSteps = stepsVM.hourlySteps.filter {
             $0.date >= today && $0.date < tomorrow
         }
-        //        let totalStepsToday = todaysSteps.map { $0.steps }.reduce(0, +)
         
         Chart {
             ForEach(todaysSteps) { entry in
@@ -113,5 +112,5 @@ struct DailyStepsChart: View {
 
 
 #Preview {
-    DailyStepsChart(isPopUp: false)
+    DailyStepsChart(stepsVM: StepsViewModel(), isPopUp: false)
 }

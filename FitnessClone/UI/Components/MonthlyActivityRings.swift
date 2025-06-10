@@ -8,55 +8,11 @@
 import SwiftUI
 import SwiftData
 
-//struct MonthlyActivityRings: View {
-//    
-//    @Query var users: [UserModel]
-//    @StateObject var healthVM = HealthViewModel.shared
-//    
-//    var body: some View {
-//        if let user = users.first {
-//            
-//            let columns: [GridItem] = Array(repeating: GridItem(spacing: 20), count: 7)
-//            
-//            LazyVGrid(columns: columns) {
-//                ForEach(Calendar.current.shortWeekdaySymbols, id: \.self) { day in
-//                    Text(day.prefix(1))
-//                        .font(.caption)
-//                        .frame(maxWidth: .infinity)
-//                        .foregroundColor(.secondary)
-//                }
-//                
-//                ForEach(healthVM.monthlyCalories) { entry in
-//                    VStack{
-//                        
-//                        let dayNumber = Calendar.current.component(.day, from: entry.date)
-//                        let isToday = Calendar.current.isDateInToday(entry.date)
-//                        
-//                        ZStack {
-//                            if isToday {
-//                                Circle()
-//                                    .fill(Color.magentaRing)
-//                                    .frame(width: 20, height: 20)
-//                            }
-//                            Text("\(dayNumber)")
-//                                .font(.caption)
-//                                .fontWeight(.semibold)
-//                        }.frame(width: 20, height: 20)
-//                        ProgressRing(progress: .constant(entry.calories), goal: user.goal!, selectedColor: .magentaRing, width: 7.5)
-//                            .frame(width: 30, height: 30)
-//                        
-//                    }
-//                }
-//            }
-//            .padding(.horizontal)
-//        }
-//    }
-//}
-
 struct MonthlyActivityRings: View {
     
     @Query var users: [UserModel]
     @StateObject var healthVM = HealthViewModel.shared
+    @StateObject var calendarVM = CalendarViewModel.shared
     
     var body: some View {
         if let user = users.first {
@@ -69,6 +25,9 @@ struct MonthlyActivityRings: View {
             let columns: [GridItem] = Array(repeating: GridItem(spacing: 20), count: 7)
             
             VStack(spacing: 25){
+                
+                Text(calendarVM.formatMonthYear(Date()))
+                
                 LazyVGrid(columns: columns, alignment: .center, spacing: 12) {
                     let symbols = calendar.shortWeekdaySymbols
                     let orderedSymbols = Array(symbols[calendar.firstWeekday - 1..<symbols.count] + symbols[0..<calendar.firstWeekday - 1])

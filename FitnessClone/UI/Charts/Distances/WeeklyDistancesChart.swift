@@ -10,7 +10,7 @@ import Charts
 
 struct WeeklyDistancesChart: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var distanceVM = DistanceViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var selectedDay: Date? = nil
@@ -24,7 +24,7 @@ struct WeeklyDistancesChart: View {
                 return f
             }()
             
-            let dayDistances = healthVM.weeklyDistance
+            let dayDistances = distanceVM.weeklyDistance
                 .first(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDay) })?.distance ?? 0
             
             if dayDistances > 0 {
@@ -51,7 +51,7 @@ struct WeeklyDistancesChart: View {
     var body: some View {
         
         Chart {
-            ForEach(healthVM.weeklyDistance) { entry in
+            ForEach(distanceVM.weeklyDistance) { entry in
                 BarMark(
                     x: .value("Day", entry.date, unit: .day),
                     y: .value("Distance", entry.distance)

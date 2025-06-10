@@ -10,7 +10,7 @@ import HealthKit
 
 struct WorkoutView: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var workoutVM = WorkoutViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     @StateObject var exportVM = ExportViewModel()
     
@@ -19,7 +19,7 @@ struct WorkoutView: View {
     var body: some View {
         NavigationStack{
             
-            let metrics = healthVM.workoutMetrics(for: selectedWorkout)
+            let metrics = workoutVM.workoutMetrics(for: selectedWorkout)
                 
                 VStack(alignment: .leading) {
                     
