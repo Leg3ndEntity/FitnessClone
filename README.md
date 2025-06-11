@@ -36,9 +36,9 @@ I wanted to challenge myself by recreating a polished, real-world app interface 
 ## Screenshots
 
 <p float="left">
-  <img src="screenshots/SummaryView.PNG" width="200" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="screenshots/ActivityView.PNG" width="200" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="screenshots/StepsChart.PNG" width="200" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="screenshots/SummaryView.PNG" width="200" />&nbsp;&nbsp;&nbsp;
+  <img src="screenshots/ActivityView.PNG" width="200" />&nbsp;&nbsp;&nbsp;
+  <img src="screenshots/StepsChart.PNG" width="200" />&nbsp;&nbsp;&nbsp;
   <img src="screenshots/WorkoutDetails.PNG" width="200" />
 </p>
 
