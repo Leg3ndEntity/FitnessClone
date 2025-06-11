@@ -11,9 +11,9 @@ struct AccountView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @State var name: String = "dsdsdsds"
-    @State var surname: String = "ffgfg"
-    @State var email: String = "saddsadsaasd"
+    @State var name: String = "Name"
+    @State var surname: String = "Surname"
+    @State var email: String = "namesurname@email.com"
     
     var body: some View {
         NavigationStack{
@@ -39,10 +39,10 @@ struct AccountView: View {
                         
                         Section{
                             NavigationLink("Health Details") {
-                                UserDetailView()
+                                EditUserDetailView()
                             }
                             NavigationLink("Change Move Goal") {
-                                UserGoalView()
+                                EditUserGoalView()
                             }
                             NavigationLink("Units of Measure") {
                                 UnitsListView()

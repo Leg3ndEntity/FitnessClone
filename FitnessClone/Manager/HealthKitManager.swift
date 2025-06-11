@@ -14,6 +14,7 @@ class HealthKitManager {
 
     private init() {}
 
+    
     var readTypes: Set<HKObjectType> {
         return [
             HKQuantityType.quantityType(forIdentifier: .stepCount)!,
@@ -24,6 +25,7 @@ class HealthKitManager {
         ]
     }
 
+    
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             completion(false)
@@ -41,6 +43,7 @@ class HealthKitManager {
         }
     }
 
+    
     func fetchSum(for identifier: HKQuantityTypeIdentifier, completion: @escaping (Double) -> Void) {
         guard let quantityType = HKQuantityType.quantityType(forIdentifier: identifier) else {
             completion(0)
@@ -60,6 +63,7 @@ class HealthKitManager {
         healthStore.execute(query)
     }
     
+    
     private func unit(for identifier: HKQuantityTypeIdentifier) -> HKUnit {
         switch identifier {
         case .stepCount: return HKUnit.count()
@@ -69,6 +73,7 @@ class HealthKitManager {
         default: return HKUnit.count()
         }
     }
+    
     
     func fetchDistanceStats(
         startDate: Date,
@@ -108,6 +113,7 @@ class HealthKitManager {
         healthStore.execute(query)
     }
     
+    
     func fetchStepStats(
         startDate: Date,
         endDate: Date = Date(),
@@ -146,6 +152,7 @@ class HealthKitManager {
         healthStore.execute(query)
     }
     
+    
     func fetchCaloriesStats(
         startDate: Date,
         endDate: Date = Date(),
@@ -183,6 +190,7 @@ class HealthKitManager {
 
         healthStore.execute(query)
     }
+    
     
     func fetchDailyWorkouts(startDate: Date, endDate: Date = Date(), completion: @escaping ([HKWorkout]) -> Void) {
         let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)

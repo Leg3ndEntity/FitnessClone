@@ -56,7 +56,7 @@ struct UserGoalCounter: View {
                 }){}
             }
             
-            Text("CALORIES/DAY")
+            Text("KILOCALORIES/DAY")
                 .font(.system(size: 25, weight: .bold))
                 
         }.padding(.vertical, 20)

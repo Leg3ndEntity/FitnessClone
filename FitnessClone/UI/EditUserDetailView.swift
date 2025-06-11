@@ -1,20 +1,23 @@
 //
-//  UserDetailView.swift
+//  EditUserDetailView.swift
 //  FitnessClone
 //
-//  Created by Simone Sarnataro on 28/05/25.
+//  Created by Simone Sarnataro on 10/06/25.
 //
 
 import SwiftUI
+import SwiftData
 
-struct UserDetailView: View {
+struct EditUserDetailView: View {
     @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    
+    @Query var users: [UserModel] = []
+    
     @StateObject var userVM = UserViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @State var activePicker: ActivePicker = .none
-    
-    @State var showUserGoalView: Bool = false
     
     @State var birthDate = Date()
     @State var gender = "Not Set"
@@ -89,8 +92,8 @@ struct UserDetailView: View {
                 }
                 
                 Button{
-                    userVM.createUser(birthDate: birthDate, gender: gender, height: height, weight: weight, modelContext: modelContext)
-                    showUserGoalView.toggle()
+                    userVM.editUser(user: users.first!, birthDate: birthDate, gender: gender, height: height, weight: weight, modelContext: modelContext)
+                    dismiss()
                 }label: {
                     Text("Continue")
                         .frame(maxWidth: .infinity)
@@ -131,13 +134,19 @@ struct UserDetailView: View {
                         }.opacity(activePicker == .none ? 0 : 1)
                         
                     }
-                }.navigationDestination(isPresented: $showUserGoalView) {
-                    UserGoalView()
+                }
+                .onAppear{
+                    if let user = users.first{
+                        (birthDate, tempBirthDate) = (user.birthDate, user.birthDate)
+                        (gender, tempGender) = (user.gender, user.gender)
+                        (height, tempHeight) = (user.height, user.height)
+                        (weight, tempWeight) = (user.weight, user.weight)
+                    }
                 }
         }
     }
 }
 
 #Preview {
-    UserDetailView()
+    EditUserDetailView()
 }

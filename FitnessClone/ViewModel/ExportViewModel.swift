@@ -27,6 +27,7 @@ class ExportViewModel: ObservableObject {
         }
     }
     
+    
     func renderProgressRingView(progress: Int, goal: Int, formattedDate: String) -> URL {
         let viewToExport = createExportableProgressRing(progress: progress, goal: goal, formattedDate: formattedDate)
         let renderer = ImageRenderer(content: viewToExport)
@@ -79,6 +80,5 @@ class ExportViewModel: ObservableObject {
         
         return URL(fileURLWithPath: "")
     }
-    
     
 }

@@ -10,20 +10,26 @@ import SwiftData
 
 class UserViewModel: ObservableObject {
     
-    @Published var user: UserModel?
-
-//    static let shared = UserViewModel()
-//    private init() { }
-    
-    func createUser(name: String?, surname: String?, birthDate: Date, gender: String, height: String, weight: String, modelContext: ModelContext){
-        let newUser = UserModel(name: name ?? nil, surname: surname ?? nil, birthDate: birthDate, gender: gender, height: height, weight: weight, goal: nil)
+    func createUser(birthDate: Date, gender: String, height: String, weight: String, modelContext: ModelContext){
+        let newUser = UserModel(birthDate: birthDate, gender: gender, height: height, weight: weight, goal: nil)
         
         modelContext.insert(newUser)
     }
     
-    func editUser(user: UserModel, name: String?, surname: String?, birthDate: Date, gender: String, height: String, weight: String, modelContext: ModelContext){
-
+    
+    func editUser(user: UserModel, birthDate: Date, gender: String, height: String, weight: String, modelContext: ModelContext){
+        user.birthDate = birthDate
+        user.gender = gender
+        user.height = height
+        user.weight = weight
+        
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error editing user: ", error)
+        }
     }
+    
     
     func deleteUser(user: UserModel, modelContext: ModelContext){
         modelContext.delete(user)

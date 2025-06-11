@@ -23,7 +23,6 @@ struct UserGoalView: View {
     @Query var users: [UserModel]
     
     @StateObject var goalVM = GoalViewModel()
-    @StateObject var healthVM = HealthViewModel.shared
     
     @State var selectedMode: Mode = .light
     
