@@ -9,16 +9,16 @@ import SwiftUI
 
 struct SessionsPopUp: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @StateObject var workoutVM = WorkoutViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     var body: some View {
-        if let workout = healthVM.workouts.first {
+        if let workout = workoutVM.workouts.first {
             NavigationStack{
                 VStack(alignment: .leading, spacing: 10){
                     
                     NavigationLink {
-                        WorkoutListView()
+                        WorkoutListView(workoutVM: workoutVM)
                     } label: {
                         HStack{
                             Text("Sessions")
@@ -32,7 +32,7 @@ struct SessionsPopUp: View {
                     Divider()
                     
                     NavigationLink {
-                        WorkoutView(selectedWorkout: workout)
+                        WorkoutView(workoutVM: workoutVM, selectedWorkout: workout)
                     } label: {
                         VStack(alignment: .leading, spacing: 10) {
                             
@@ -41,7 +41,7 @@ struct SessionsPopUp: View {
                                 .symbolRenderingMode(.hierarchical)
                                 .foregroundColor(Color.accentColor)
                             
-                            if let workout = healthVM.workouts.first,
+                            if let workout = workoutVM.workouts.first,
                                let distance = workout.totalDistance?.doubleValue(for: .meter()) {
                                 
                                 VStack(alignment: .leading){

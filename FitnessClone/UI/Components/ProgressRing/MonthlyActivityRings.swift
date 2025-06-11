@@ -11,7 +11,7 @@ import SwiftData
 struct MonthlyActivityRings: View {
     
     @Query var users: [UserModel]
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var caloriesVM = CaloriesViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     var body: some View {
@@ -44,7 +44,7 @@ struct MonthlyActivityRings: View {
                         Color.clear.frame(height: 50)
                     }
                     
-                    ForEach(healthVM.monthlyCalories) { entry in
+                    ForEach(caloriesVM.monthlyCalories) { entry in
                         VStack {
                             let dayNumber = calendar.component(.day, from: entry.date)
                             let isToday = calendar.isDateInToday(entry.date)

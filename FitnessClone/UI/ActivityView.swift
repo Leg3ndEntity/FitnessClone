@@ -12,7 +12,11 @@ struct ActivityView: View {
     
     @Query var users: [UserModel]
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @StateObject var stepsVM = StepsViewModel()
+    @StateObject var distanceVM = DistanceViewModel()
+    @StateObject var flightsVM = FlightsViewModel()
+    @StateObject var caloriesVM = CaloriesViewModel()
+    
     @StateObject var exportVM = ExportViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
@@ -31,11 +35,11 @@ struct ActivityView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                WeeklyActivityRingsBanner()
+                WeeklyActivityRingsBanner(caloriesVM: caloriesVM)
                 ScrollView{
                     if let user = users.first {
                         VStack(spacing: 25){
-                            ProgressRing(progress: $healthVM.calories, goal: user.goal!, isMainActivityRing: true, lineWidth: 50, frameWidth: 200)
+                            ProgressRing(progress: $caloriesVM.calories, goal: user.goal!, isMainActivityRing: true, lineWidth: 50, frameWidth: 200)
                             
                             HStack{
                                 VStack(alignment: .leading){
@@ -43,7 +47,7 @@ struct ActivityView: View {
                                         .font(.subheadline)
                                         .fontWeight(.medium)
                                     
-                                    Text("\(healthVM.calories)/\(user.goal!)")
+                                    Text("\(caloriesVM.calories)/\(user.goal!)")
                                         .font(.title)
                                         .fontWeight(.medium)
                                         .foregroundStyle(.magentaRing)
@@ -73,7 +77,7 @@ struct ActivityView: View {
                                             .font(.subheadline)
                                             .fontWeight(.medium)
                                         
-                                        Text("\(healthVM.steps)")
+                                        Text("\(stepsVM.steps)")
                                             .font(.title)
                                             .fontWeight(.medium)
                                     }
@@ -83,7 +87,7 @@ struct ActivityView: View {
                                             .font(.subheadline)
                                             .fontWeight(.medium)
                                         
-                                        Text(String(format: "%.2f", healthVM.distance * 0.001))
+                                        Text(String(format: "%.2f", distanceVM.distance * 0.001))
                                             .font(.title)
                                             .fontWeight(.medium)
                                         + Text("KM")
@@ -99,7 +103,7 @@ struct ActivityView: View {
                                         .font(.subheadline)
                                         .fontWeight(.medium)
                                     
-                                    Text("\(healthVM.flightsClimbed)")
+                                    Text("\(flightsVM.flightsClimbed)")
                                         .font(.title)
                                         .fontWeight(.medium)
                                 }
@@ -112,6 +116,7 @@ struct ActivityView: View {
                 
             }.navigationTitle("Today, \(currentDate)")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(.black, for: .navigationBar)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button{
@@ -122,7 +127,7 @@ struct ActivityView: View {
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         if let user = users.first {
-                            let url = exportVM.renderProgressRingView(progress: healthVM.calories, goal: user.goal!, formattedDate: calendarVM.formatShortDate(Date()))
+                            let url = exportVM.renderProgressRingView(progress: caloriesVM.calories, goal: user.goal!, formattedDate: calendarVM.formatShortDate(Date()))
                             
                             ShareLink("Share Progress", item: url, message: Text("Check out my progress today with the Fitness app."))
                             
@@ -130,7 +135,7 @@ struct ActivityView: View {
                     }
                 }
                 .sheet(isPresented: $showActivityCalendar) {
-                    MonthlyActivityRings()
+                    MonthlyActivityRings(caloriesVM: caloriesVM)
                 }
         }
     }

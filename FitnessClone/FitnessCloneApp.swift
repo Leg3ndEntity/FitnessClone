@@ -10,9 +10,8 @@ import SwiftData
 
 @main
 struct FitnessCloneApp: App {
-    @AppStorage("IsFirstTime") var isFirstTime: Bool = true
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @AppStorage("IsFirstTime") var isFirstTime: Bool = true
     
     var body: some Scene {
         WindowGroup {

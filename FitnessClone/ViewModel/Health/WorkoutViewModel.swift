@@ -10,14 +10,16 @@ import Foundation
 import HealthKit
 
 class WorkoutViewModel: ObservableObject {
-    private let manager = HealthKitManager.shared
 
     @Published var workouts: [HKWorkout] = []
 
+    private let manager = HealthKitManager.shared
+    
     init() {
         fetchAllWorkouts()
     }
 
+    
     func fetchAllWorkouts() {
         let startDate = Date.distantPast
         let endDate = Date()
@@ -26,25 +28,8 @@ class WorkoutViewModel: ObservableObject {
             self.workouts = workouts.sorted { $0.startDate > $1.startDate }
         }
     }
-
-    func fetchRecentWorkouts() {
-        let now = Date()
-        let oneYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: now)!
-
-        manager.fetchDailyWorkouts(startDate: oneYearAgo, endDate: now) { workouts in
-            self.workouts = workouts.sorted { $0.startDate > $1.startDate }
-        }
-    }
-
-    func fetchDailyWorkouts() {
-        let startOfDay = Calendar.current.startOfDay(for: Date())
-        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
-
-        manager.fetchDailyWorkouts(startDate: startOfDay, endDate: endOfDay) {
-            self.workouts = $0
-        }
-    }
-
+    
+    
     func workoutMetrics(for workout: HKWorkout) -> WorkoutMetrics {
         let duration = workout.duration
         let distance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0
@@ -96,4 +81,5 @@ class WorkoutViewModel: ObservableObject {
             averageHeartRate: averageHeartRate
         )
     }
+    
 }

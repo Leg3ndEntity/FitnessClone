@@ -9,23 +9,24 @@ import Foundation
 import HealthKit
 
 class CaloriesViewModel: ObservableObject {
-    private let manager = HealthKitManager.shared
-
+    
     @Published var calories: Int = 0
     @Published var hourlyCalories: [CalorieModel] = []
     @Published var weeklyCalories: [CalorieModel] = []
     @Published var monthlyCalories: [CalorieModel] = []
-    @Published var yearlyCalories: [CalorieModel] = []
+    
+    private let manager = HealthKitManager.shared
 
     init() {
-        fetchCalories()
         fetchAllCaloriesData()
     }
+
 
     private func fetchCalories() {
         manager.fetchSum(for: .activeEnergyBurned) { self.calories = Int($0) }
     }
 
+    
     private func fetchHourlyCalories() {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         manager.fetchCaloriesStats(startDate: startOfDay, interval: .hour) {
@@ -33,6 +34,7 @@ class CaloriesViewModel: ObservableObject {
         }
     }
 
+    
     private func fetchWeeklyCalories() {
         let calendar = Calendar.current
         let now = Date()
@@ -44,6 +46,7 @@ class CaloriesViewModel: ObservableObject {
         }
     }
 
+    
     private func fetchMonthlyCalories() {
         let calendar = Calendar.current
         let now = Date()
@@ -55,19 +58,12 @@ class CaloriesViewModel: ObservableObject {
         }
     }
 
-    private func fetchYearlyCalories() {
-        let calendar = Calendar.current
-        let now = Date()
-        let startOfYear = calendar.date(from: calendar.dateComponents([.year], from: now))!
-        manager.fetchCaloriesStats(startDate: startOfYear, endDate: now, interval: .month) {
-            self.yearlyCalories = $0
-        }
-    }
-
+    
     private func fetchAllCaloriesData() {
+        fetchCalories()
         fetchHourlyCalories()
         fetchWeeklyCalories()
         fetchMonthlyCalories()
-        fetchYearlyCalories()
     }
+    
 }

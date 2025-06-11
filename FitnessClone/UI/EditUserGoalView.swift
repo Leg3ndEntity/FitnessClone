@@ -15,8 +15,6 @@ struct EditUserGoalView: View {
     
     @StateObject var goalVM = GoalViewModel()
     
-    @State var selectedMode: Mode = .light
-    
     var body: some View {
         NavigationStack{
             VStack(spacing: 25){

@@ -17,7 +17,7 @@ struct NotificationSettingsView: View {
                     Section {
                         HStack{
                             Text("Daily Coaching")
-                            Toggle("", isOn: .constant(true))
+                            Toggle("", isOn: .constant(false))
                         }
                     } header: {
                         Text("ACTIVITY")
@@ -29,7 +29,7 @@ struct NotificationSettingsView: View {
                     Section {
                         HStack{
                             Text("Goal Completions")
-                            Toggle("", isOn: .constant(true))
+                            Toggle("", isOn: .constant(false))
                         }
                     } header: {
                     } footer: {
@@ -40,7 +40,7 @@ struct NotificationSettingsView: View {
                     Section {
                         HStack{
                             Text("Activity Sharing")
-                            Toggle("", isOn: .constant(true))
+                            Toggle("", isOn: .constant(false))
                         }
                     } header: {
                     } footer: {

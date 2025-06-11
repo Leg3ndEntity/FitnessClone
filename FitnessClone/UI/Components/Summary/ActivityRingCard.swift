@@ -12,7 +12,7 @@ struct ActivityRingCard: View {
     
     @Query var users: [UserModel]
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @StateObject var caloriesVM = CaloriesViewModel()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15){
@@ -25,7 +25,7 @@ struct ActivityRingCard: View {
             HStack(alignment: .center, spacing: 25){
                 
                 if let user = users.first {
-                    ProgressRing(progress: .constant(healthVM.calories), goal: user.goal!, lineWidth: 25, frameWidth: 100)
+                    ProgressRing(progress: .constant(caloriesVM.calories), goal: user.goal!, lineWidth: 25, frameWidth: 100)
                     
                     VStack(alignment: .leading){
                         Text("Move")
@@ -33,7 +33,7 @@ struct ActivityRingCard: View {
                             .fontWeight(.medium)
                         
                         
-                        Text("\(healthVM.calories)/\(user.goal!)")
+                        Text("\(caloriesVM.calories)/\(user.goal!)")
                             .font(.title3)
                             .fontWeight(.medium)
                             .foregroundStyle(.magentaRing)

@@ -9,17 +9,18 @@ import Foundation
 import HealthKit
 
 class FlightsViewModel: ObservableObject {
-    private let manager = HealthKitManager.shared
-
+    
     @Published var flightsClimbed: Int = 0
+
+    private let manager = HealthKitManager.shared
 
     init() {
         fetchFlightsClimbed()
     }
 
+    
     private func fetchFlightsClimbed() {
-        manager.fetchSum(for: .flightsClimbed) {
-            self.flightsClimbed = Int($0)
-        }
+        manager.fetchSum(for: .flightsClimbed) { self.flightsClimbed = Int($0) }
     }
+    
 }

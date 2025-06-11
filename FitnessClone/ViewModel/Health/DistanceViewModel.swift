@@ -9,23 +9,25 @@ import Foundation
 import HealthKit
 
 class DistanceViewModel: ObservableObject {
-    private let manager = HealthKitManager.shared
-
+    
     @Published var distance: Double = 0
     @Published var hourlyDistance: [DistanceModel] = []
     @Published var weeklyDistance: [DistanceModel] = []
     @Published var monthlyDistance: [DistanceModel] = []
     @Published var yearlyDistance: [DistanceModel] = []
 
+    private let manager = HealthKitManager.shared
+
     init() {
-        fetchDistance()
         fetchAllDistanceData()
     }
 
+    
     private func fetchDistance() {
         manager.fetchSum(for: .distanceWalkingRunning) { self.distance = $0 }
     }
 
+    
     func fetchHourlyDistance() {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         manager.fetchDistanceStats(startDate: startOfDay, interval: .hour) {
@@ -33,6 +35,7 @@ class DistanceViewModel: ObservableObject {
         }
     }
 
+    
     func fetchWeeklyDistance() {
         let now = Date()
         let startOfWeek = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now))!
@@ -41,6 +44,7 @@ class DistanceViewModel: ObservableObject {
         }
     }
 
+    
     func fetchMonthlyDistance() {
         let now = Date()
         let startOfMonth = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: now))!
@@ -49,6 +53,7 @@ class DistanceViewModel: ObservableObject {
         }
     }
 
+    
     func fetchYearlyDistance() {
         let calendar = Calendar.current
         let now = Date()
@@ -81,9 +86,11 @@ class DistanceViewModel: ObservableObject {
     }
 
     func fetchAllDistanceData() {
+        fetchDistance()
         fetchHourlyDistance()
         fetchWeeklyDistance()
         fetchMonthlyDistance()
         fetchYearlyDistance()
     }
+    
 }

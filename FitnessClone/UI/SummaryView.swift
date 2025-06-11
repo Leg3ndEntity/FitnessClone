@@ -11,6 +11,7 @@ import SwiftData
 struct SummaryView: View {
     @AppStorage("showPopUp") var showPopUp: Bool = true
     
+    @StateObject var caloriesVM = CaloriesViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     @Query var users: [UserModel]

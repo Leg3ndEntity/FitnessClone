@@ -30,9 +30,4 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    
-    func deleteUser(user: UserModel, modelContext: ModelContext){
-        modelContext.delete(user)
-    }
-    
 }

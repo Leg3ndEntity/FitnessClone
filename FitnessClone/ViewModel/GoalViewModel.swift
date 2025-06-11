@@ -15,9 +15,11 @@ class GoalViewModel: ObservableObject {
     var timer: Timer?
     var durata = 0.0
     
+    
     func loadSavedGoal(user: UserModel, modelContext: ModelContext){
         self.goal = user.goal ?? 120
     }
+    
     
     func editGoal(user: UserModel, modelContext: ModelContext){
         user.goal = self.goal
@@ -28,6 +30,7 @@ class GoalViewModel: ObservableObject {
             print("Error editing goal: ", error)
         }
     }
+    
     
     func startTimer(increase: Bool) {
         timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { timer in

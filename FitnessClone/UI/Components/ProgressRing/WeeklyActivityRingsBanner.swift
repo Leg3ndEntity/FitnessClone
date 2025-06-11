@@ -11,12 +11,12 @@ import SwiftData
 struct WeeklyActivityRingsBanner: View {
     
     @Query var users: [UserModel]
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var caloriesVM = CaloriesViewModel()
     
     var body: some View {
         if let user = users.first {
             HStack(spacing: 20){
-                ForEach(healthVM.weeklyCalories){ entry in
+                ForEach(caloriesVM.weeklyCalories){ entry in
                     VStack {
                         
                         let initial = entry.date.formatted(.dateTime.weekday(.abbreviated)).prefix(1).uppercased()

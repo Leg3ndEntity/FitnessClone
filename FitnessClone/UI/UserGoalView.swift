@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-enum Mode: String, CaseIterable, Identifiable {
+enum PickerMode: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
     
     case light = "Lightly"
@@ -24,7 +24,7 @@ struct UserGoalView: View {
     
     @StateObject var goalVM = GoalViewModel()
     
-    @State var selectedMode: Mode = .light
+    @State var selectedMode: PickerMode = .light
     
     var body: some View {
         VStack(spacing: 25){
@@ -39,7 +39,7 @@ struct UserGoalView: View {
                 .padding(.horizontal, 20)
     
             Picker("Mode", selection: $selectedMode) {
-                ForEach(Mode.allCases) { mode in
+                ForEach(PickerMode.allCases) { mode in
                     Text(mode.rawValue).tag(mode)
                 }
             }.pickerStyle(SegmentedPickerStyle())

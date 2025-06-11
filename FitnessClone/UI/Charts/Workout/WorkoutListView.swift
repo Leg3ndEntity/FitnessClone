@@ -10,11 +10,11 @@ import HealthKit
 
 struct WorkoutListView: View {
     
-    @StateObject var healthVM = HealthViewModel.shared
+    @ObservedObject var workoutVM = WorkoutViewModel()
     @StateObject var calendarVM = CalendarViewModel.shared
     
     var groupedWorkouts: [(date: Date, workouts: [HKWorkout])] {
-        let filteredList: [HKWorkout] = healthVM.workouts
+        let filteredList: [HKWorkout] = workoutVM.workouts
         
         let sortedList: [HKWorkout] = filteredList.sorted {
             $0.startDate > $1.startDate
@@ -33,7 +33,7 @@ struct WorkoutListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if healthVM.workouts.isEmpty {
+                if workoutVM.workouts.isEmpty {
                     Text("No workouts available")
                         .foregroundColor(.gray)
                         .padding()

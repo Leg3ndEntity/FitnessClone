@@ -9,7 +9,6 @@ import Foundation
 import HealthKit
 
 class StepsViewModel: ObservableObject {
-    private let manager = HealthKitManager.shared
 
     @Published var steps: Int = 0
     @Published var hourlySteps: [StepModel] = []
@@ -17,15 +16,18 @@ class StepsViewModel: ObservableObject {
     @Published var monthlySteps: [StepModel] = []
     @Published var yearlySteps: [StepModel] = []
 
+    private let manager = HealthKitManager.shared
+    
     init() {
-        fetchSteps()
         fetchAllStepsData()
     }
 
+    
     private func fetchSteps() {
         manager.fetchSum(for: .stepCount) { self.steps = Int($0) }
     }
 
+    
     func fetchHourlySteps() {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         manager.fetchStepStats(startDate: startOfDay, interval: .hour) {
@@ -33,6 +35,7 @@ class StepsViewModel: ObservableObject {
         }
     }
 
+    
     func fetchWeeklySteps() {
         let now = Date()
         let startOfWeek = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now))!
@@ -41,6 +44,7 @@ class StepsViewModel: ObservableObject {
         }
     }
 
+    
     func fetchMonthlySteps() {
         let now = Date()
         let startOfMonth = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: now))!
@@ -48,6 +52,7 @@ class StepsViewModel: ObservableObject {
             self.monthlySteps = $0
         }
     }
+    
     
     func fetchYearlySteps() {
         let calendar = Calendar.current
@@ -82,10 +87,13 @@ class StepsViewModel: ObservableObject {
         }
     }
 
+    
     func fetchAllStepsData() {
+        fetchSteps()
         fetchHourlySteps()
         fetchWeeklySteps()
         fetchMonthlySteps()
         fetchYearlySteps()
     }
+    
 }

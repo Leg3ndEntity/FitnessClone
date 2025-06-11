@@ -99,5 +99,4 @@ class CalendarViewModel: ObservableObject {
         return Calendar.current.date(byAdding: DateComponents(year: 1, second: -1), to: start)!
     }
 
-
 }

@@ -61,6 +61,7 @@ class ExportViewModel: ObservableObject {
         
     }
     
+    
     func renderWorkoutCardView(type: String, duration: Double, distance: Double, kiloCalories: Double, pace: Double, totalKiloCalories: Double, heartRate: Int) -> URL {
         let viewToExport = createWorkoutCard(type: type, duration: duration, distance: distance, avgKiloCalories: kiloCalories, pace: pace, totalKiloCalories: totalKiloCalories, heartRate: heartRate)
         let renderer = ImageRenderer(content: viewToExport)
